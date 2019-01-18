@@ -9,9 +9,6 @@
 
 # Bruno Melli 1/9/19
 
-echo "This is not a working script yet."
-exit 1
-
 # TODO
 # Figure out what to set LROSE_ROOT_DIR while brew is
 # building fractl and samurai, but before lr0se-blaze has been installed
@@ -20,11 +17,10 @@ exit 1
 
 tag=""
 branch=""
-dir=`pwd`
 buildDir="package_blaze.$$"
-
+DEST=/Applications/MAMP/htdocs/testing/
 TARFILE=lrose-blaze-20190104.homebrew.tgz
-TARGET=/Applications/MAMP/htdocs/testing/$TARFILE
+TARGET=$DEST/$TARFILE
 
 while getopts "b:t:h" opt; do
     case ${opt} in
@@ -119,7 +115,7 @@ class LroseBlaze < Formula
 
     # Build/install samurai
     Dir.chdir("samurai")
-    ENV['LROSE_ROOT_DIR'] = '/usr/local'
+    ENV['LROSE_ROOT_DIR'] = prefix
     system "cmake", "."
     system "make", "VERBOSE=1"
     bin.install 'build/release/bin/samurai'
@@ -129,7 +125,7 @@ class LroseBlaze < Formula
 
     # Build/install fractl
     Dir.chdir("fractl")
-    ENV['LROSE_ROOT_DIR'] = '/usr/local'
+    ENV['LROSE_ROOT_DIR'] = prefix
     system "cmake", "."
     system "make"
     bin.install 'build/release/bin/fractl'
@@ -144,4 +140,4 @@ end
 
 EOF
 
-mv lrose-blaze.rb $dir
+mv lrose-blaze.rb $DEST
