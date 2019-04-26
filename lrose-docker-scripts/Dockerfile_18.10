@@ -12,16 +12,17 @@ COPY checkout_and_build_auto.py /tmp
 
 RUN apt-get update && apt-get install -y  \
     libbz2-dev libx11-dev libfftw3-dev \
-    qtbase5-dev git rsync \
+    qtbase5-dev libqt5webview5-dev git rsync \
     gcc g++ gfortran libfl-dev chrpath \
     automake make libtool pkg-config libexpat1-dev python \
-    cmake libgeographic-dev libeigen3-dev libzip-dev libcurl4-openssl-dev
+    cmake libgeographic-dev libeigen3-dev libzip-dev libcurl4-openssl-dev \
+    libpng-dev 
     
 WORKDIR /tmp
 
-RUN ln -s /usr/lib/x86_64-linux-gnu/qt5/bin/qmake /usr/bin/qmake-qt5 && \
+RUN ln -s -f /usr/lib/x86_64-linux-gnu/qt5/bin/qmake /usr/bin/qmake-qt5 && \
     /tmp/checkout_and_build_auto.py --debug --package lrose-blaze --prefix \
-         /usr/local/lrose --clean
+         /usr/local/lrose --clean --logDir /tmp/my_lrose_log
 
 # Checkout and build fractl
 
