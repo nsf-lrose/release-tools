@@ -5,7 +5,7 @@
 Lrose-Blaze allows you to run Lrose applications without having to
 compile and install lrose binaries and libraries. 
 
-It is a Ubuntu 14.04 image, with lrose-core installed in 
+It is a Ubuntu 16.04 image, with lrose-core installed in 
 /usr/local/lrose.
 
 It has one user named **lrose** so if you don't want to run commands
