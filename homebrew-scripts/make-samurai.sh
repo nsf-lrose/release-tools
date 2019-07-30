@@ -95,6 +95,7 @@ class Samurai < Formula
   depends_on 'cmake'
   depends_on 'geographiclib'
   depends_on 'eigen'
+  depends_on 'libomp'
   depends_on 'lrose-blaze'
   depends_on 'qt'
   depends_on :x11

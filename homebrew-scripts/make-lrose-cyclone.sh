@@ -1,25 +1,24 @@
 #!/bin/bash
 
-# Build the lrose-blaze homebrew formula
-# - Grab the mac source release of lrose-blaze
+# Build the lrose-cyclone homebrew formula
+# - Grab the mac source release of lrose-cyclone
 # - untar it
-# - add the samurai and fractl sources (with the given tag)
+# - add the samurai, fractl, and vortrac sources (with the given tag)
 # - repack everything
-# - generate a lrose-blaze.rb formula
+# - generate a lrose-cyclone.rb formula
 
-# Bruno Melli 1/9/19
+# Bruno Melli 7/25/19
 
 # TODO
 # Figure out what to set LROSE_ROOT_DIR while brew is
-# building fractl and samurai, but before lr0se-blaze has been installed
+# building fractl and samurai, but before ose-cyclone has been installed
 # in /usr/local
-
 
 tag=""
 branch=""
-buildDir="package_blaze.$$"
+buildDir="package_cyclone.$$"
 DEST=/Applications/MAMP/htdocs/testing/
-TARFILE=lrose-blaze-20190104.homebrew.tgz
+TARFILE=lrose-cyclone-20190726.homebrew.tgz
 TARGET=$DEST/$TARFILE
 
 while getopts "b:t:h" opt; do
@@ -39,7 +38,7 @@ if [[ ! -z "$tag" ]] && [[ ! -z "$branch" ]]; then
 fi
 
 if [[ -z "$tag" ]] && [[ -z "$branch" ]]; then
-    tag=lrose-blaze-20190105
+    tag=lrose-cyclone-20190726
 fi
 
 cd /tmp
@@ -47,18 +46,18 @@ rm -rf $buildDir
 mkdir $buildDir
 cd $buildDir
 
-# First get the lrose-blaze release (subset of lrose-core)
+# First get the lrose-cyclone release (subset of lrose-core)
 
-wget https://github.com/NCAR/lrose-core/releases/download/lrose-blaze-20190104/lrose-blaze-20190104.src.mac_osx.tgz
+wget https://github.com/NCAR/lrose-core/releases/download/lrose-cyclone-20190725/lrose-cyclone-20190725.src.mac_osx.tgz
 
-tar zxf lrose-blaze-20190104.src.mac_osx.tgz
-rm lrose-blaze-20190104.src.mac_osx.tgz
+tar zxf lrose-cyclone-20190725.src.mac_osx.tgz
+rm lrose-cyclone-20190725.src.mac_osx.tgz
 
-cd lrose-blaze-20190104.src.mac_osx
+cd lrose-cyclone-20190725.src.mac_osx
 
 # Grab addons from mmbell
 
-for tool in samurai fractl; do
+for tool in samurai fractl vortrac; do
     git clone "https://github.com/mmbell/${tool}.git"
     cd $tool
     if [ ! -z "$tag" ]; then
@@ -69,18 +68,18 @@ for tool in samurai fractl; do
 done
 
 cd .. 
-tar zcf $TARGET lrose-blaze-20190104.src.mac_osx
+tar zcf $TARGET lrose-cyclone-20190725.src.mac_osx
 
 checksum=`sha256sum $TARGET | awk '{ print $1; }'`
 
 URL="http://mistral.atmos.colostate.edu/testing/$TARFILE"
-echo "Generating lrose-blaze.rb"
+echo "Generating lrose-cyclone.rb"
 
-cat <<EOF > lrose-blaze.rb
+cat <<EOF > lrose-cyclone.rb
 
 require 'formula'
 
-class LroseBlaze < Formula
+class LroseCyclone < Formula
   env :std
   homepage 'https://github.com/mmbell/samurai'
 
@@ -105,7 +104,7 @@ class LroseBlaze < Formula
   depends_on :x11
 
   def install
-    # This is the lrose-blaze subset of lrose-core
+    # This is the lrose-cyclone subset of lrose-core
 
     ENV["PKG_CONFIG_PATH"] = "/usr/local/opt/qt/lib/pkgconfig"
     Dir.chdir("codebase")
@@ -113,6 +112,14 @@ class LroseBlaze < Formula
     system "make install"
     Dir.chdir("..")
     system "rsync", "-av", "share", "#{prefix}"
+
+    # Build/install fractl
+    Dir.chdir("fractl")
+    ENV['LROSE_ROOT_DIR'] = prefix
+    system "cmake", "."
+    system "make"
+    bin.install 'build/release/bin/fractl'
+    Dir.chdir("..")
 
     # Build/install samurai
     Dir.chdir("samurai")
@@ -123,22 +130,29 @@ class LroseBlaze < Formula
     lib.install 'build/release/lib/libsamurai.a'
     lib.install 'build/release/lib/libsamurai.dylib'
     include.install 'src/samurai.h'
+    Dir.chdir("..")
 
-    # Build/install fractl
-    Dir.chdir("fractl")
+    # Build/install vortrac
+    Dir.chdir("vortrac/src")
     ENV['LROSE_ROOT_DIR'] = prefix
-    system "cmake", "."
+    ENV['NETCDF_INCLUDE'] = "#{prefix}/include"
+    ENV['NETCDF_LIB'] = "#{prefix}/lib"
+    system "qmake", "."
     system "make"
-    bin.install 'build/release/bin/fractl'
+    bin.install 'vortrac.app/Contents/MacOS/vortrac'
+    Dir.chdir("..")
+    system "rsync", "-av", "Resources", "#{prefix}"
+    Dir.chdir("..")
   end
  
   def test
     system "#{bin}/RadxPrint", "-h"
     system "#{bin}/samurai", "-h"
     system "#{bin}/fractl", "-h"
+    system "#{bin}/vortrac", "-h"
   end
 end
 
 EOF
 
-mv lrose-blaze.rb $DEST
+mv lrose-cyclone.rb $DEST
