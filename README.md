@@ -4,7 +4,7 @@
 
 Tools to help creating release assets: homebrew formulas, docker images, debian packages,...
 
-## Struture ##
+## Structure ##
 
 * homebrew-scripts
 
