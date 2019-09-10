@@ -14,11 +14,14 @@
 # building fractl and samurai, but before ose-cyclone has been installed
 # in /usr/local
 
+RELEASE_DATE=20190910
+LROSE_CORE_RELEASE_DATE=20190801
 tag=""
 branch=""
 buildDir="package_cyclone.$$"
-DEST=/Applications/MAMP/htdocs/testing/
-TARFILE=lrose-cyclone-20190726.homebrew.tgz
+# DEST=/Applications/MAMP/htdocs/testing/
+DEST=/tmp/ 
+TARFILE=lrose-cyclone-$RELEASE_DATE.homebrew.tgz
 TARGET=$DEST/$TARFILE
 
 while getopts "b:t:h" opt; do
@@ -38,8 +41,10 @@ if [[ ! -z "$tag" ]] && [[ ! -z "$branch" ]]; then
 fi
 
 if [[ -z "$tag" ]] && [[ -z "$branch" ]]; then
-    tag=lrose-cyclone-20190726
+    tag=lrose-cyclone-$RELEASE_DATE
 fi
+
+echo "tag is ", $tag
 
 cd /tmp
 rm -rf $buildDir
@@ -48,12 +53,12 @@ cd $buildDir
 
 # First get the lrose-cyclone release (subset of lrose-core)
 
-wget https://github.com/NCAR/lrose-core/releases/download/lrose-cyclone-20190725/lrose-cyclone-20190725.src.mac_osx.tgz
+wget https://github.com/NCAR/lrose-core/releases/download/lrose-cyclone-$LROSE_CORE_RELEASE_DATE/lrose-cyclone-$LROSE_CORE_RELEASE_DATE.src.mac_osx.tgz
 
-tar zxf lrose-cyclone-20190725.src.mac_osx.tgz
-rm lrose-cyclone-20190725.src.mac_osx.tgz
+tar zxf lrose-cyclone-$LROSE_CORE_RELEASE_DATE.src.mac_osx.tgz
+rm lrose-cyclone-$LROSE_CORE_RELEASE_DATE.src.mac_osx.tgz
 
-cd lrose-cyclone-20190725.src.mac_osx
+cd lrose-cyclone-$LROSE_CORE_RELEASE_DATE.src.mac_osx
 
 # Grab addons from mmbell
 
@@ -68,7 +73,7 @@ for tool in samurai fractl vortrac; do
 done
 
 cd .. 
-tar zcf $TARGET lrose-cyclone-20190725.src.mac_osx
+tar zcf $TARGET lrose-cyclone-$LROSE_CORE_RELEASE_DATE.src.mac_osx
 
 checksum=`sha256sum $TARGET | awk '{ print $1; }'`
 
