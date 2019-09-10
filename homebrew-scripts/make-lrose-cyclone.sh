@@ -16,6 +16,7 @@
 
 RELEASE_DATE=20190910
 LROSE_CORE_RELEASE_DATE=20190801
+ADD_ON_RELEASE_DATE=20190726
 tag=""
 branch=""
 buildDir="package_cyclone.$$"
@@ -41,7 +42,7 @@ if [[ ! -z "$tag" ]] && [[ ! -z "$branch" ]]; then
 fi
 
 if [[ -z "$tag" ]] && [[ -z "$branch" ]]; then
-    tag=lrose-cyclone-$RELEASE_DATE
+    tag=lrose-cyclone-$ADD_ON_RELEASE_DATE
 fi
 
 echo "tag is ", $tag
@@ -78,6 +79,7 @@ tar zcf $TARGET lrose-cyclone-$LROSE_CORE_RELEASE_DATE.src.mac_osx
 checksum=`sha256sum $TARGET | awk '{ print $1; }'`
 
 URL="http://mistral.atmos.colostate.edu/testing/$TARFILE"
+# URL="https://github.com/NCAR/lrose-release-test/releases/download/testing/$TARFILE"
 echo "Generating lrose-cyclone.rb"
 
 cat <<EOF > lrose-cyclone.rb
@@ -89,7 +91,7 @@ class LroseCyclone < Formula
   homepage 'https://github.com/mmbell/samurai'
 
   url '$URL'
-  version '20190104'
+  version '$RELEASE_DATE'
   sha256 '$checksum'
 
   depends_on 'cmake'
@@ -106,6 +108,7 @@ class LroseCyclone < Formula
   depends_on 'qt'
   depends_on 'szip'
   depends_on 'udunits'
+  depends_on 'armadillo'
   depends_on :x11
 
   def install
