@@ -1,18 +1,14 @@
 #!/bin/bash
 
-# Build the lrose-cyclone homebrew formula
-# - Grab the mac source release of lrose-cyclone
+# Build the lrose-cyclone packege (.tgz file)  
+# - Grab the linux source release of lrose-cyclone
 # - untar it
-# - add the samurai, fractl, and vortrac sources (with the given tag)
+# - add the samurai, fractl, and vortrac (branch) sources (with the given tag)
 # - repack everything
 # - generate a lrose-cyclone.rb formula
 
 # Bruno Melli 7/25/19
-
-# TODO
-# Figure out what to set LROSE_ROOT_DIR while brew is
-# building fractl and samurai, but before ose-cyclone has been installed
-# in /usr/local
+# Brenda Javornik 9/12/2019
 
 RELEASE_DATE=20190910
 LROSE_CORE_RELEASE_DATE=20190801
@@ -22,7 +18,7 @@ branch=""
 buildDir="package_cyclone.$$"
 # DEST=/Applications/MAMP/htdocs/testing/
 DEST=/tmp/ 
-TARFILE=lrose-cyclone-$RELEASE_DATE.homebrew.tgz
+TARFILE=lrose-cyclone-$RELEASE_DATE.tgz
 TARGET=$DEST/$TARFILE
 
 while getopts "b:t:h" opt; do
@@ -54,12 +50,12 @@ cd $buildDir
 
 # First get the lrose-cyclone release (subset of lrose-core)
 
-wget https://github.com/NCAR/lrose-core/releases/download/lrose-cyclone-$LROSE_CORE_RELEASE_DATE/lrose-cyclone-$LROSE_CORE_RELEASE_DATE.src.mac_osx.tgz
+wget https://github.com/NCAR/lrose-core/releases/download/lrose-cyclone-$LROSE_CORE_RELEASE_DATE/lrose-cyclone-$LROSE_CORE_RELEASE_DATE.src.tgz
 
-tar zxf lrose-cyclone-$LROSE_CORE_RELEASE_DATE.src.mac_osx.tgz
-rm lrose-cyclone-$LROSE_CORE_RELEASE_DATE.src.mac_osx.tgz
+tar zxf lrose-cyclone-$LROSE_CORE_RELEASE_DATE.src.tgz
+rm lrose-cyclone-$LROSE_CORE_RELEASE_DATE.src.tgz
 
-cd lrose-cyclone-$LROSE_CORE_RELEASE_DATE.src.mac_osx
+cd lrose-cyclone-$LROSE_CORE_RELEASE_DATE.src
 
 # Grab addons from mmbell
 
