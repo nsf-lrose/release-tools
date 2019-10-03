@@ -12,7 +12,7 @@ COPY checkout_and_build_auto.py /tmp
 
 RUN apt-get update && apt-get install -y  \
     libbz2-dev libx11-dev libfftw3-dev \
-    qtdeclarative5-dev libqt5webview5-dev git rsync \
+    qtbase5-dev libqt5webview5-dev git rsync \
     gcc g++ gfortran libfl-dev chrpath \
     automake make libtool pkg-config libexpat1-dev python \
     cmake libgeographic-dev libeigen3-dev libzip-dev libcurl4-openssl-dev \
