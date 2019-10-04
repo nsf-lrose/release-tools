@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-# Query docker for the status of the lrose-blaze image
+# Query docker for the status of the lrose-cyclone image
 # Print out the pull count
 #
 # To be run by cron every day at 11:59pm
@@ -10,7 +10,7 @@ require 'net/http'
 require 'uri'
 require 'date'
 
-uri = URI.parse("https://hub.docker.com/v2/repositories/nsflrose/lrose-blaze/")
+uri = URI.parse("https://hub.docker.com/v2/repositories/nsflrose/lrose-cyclone/")
 response = Net::HTTP.get_response(uri)
 
 if response.code.to_i != 200

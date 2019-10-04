@@ -1,5 +1,5 @@
 # docker_scripts
-Various scripts and files to build a lrose-blaze image
+Various scripts and files to build a lrose-cyclone image
 
   * build.md
   		Show how to build the image
@@ -9,7 +9,7 @@ Various scripts and files to build a lrose-blaze image
   		Explain how to use the image
   * build.sh
       create a VERSION file with today's date
-      build lrose-blaze from the top of NCAR/lrose-core
+      build lrose-cyclone from the top of NCAR/lrose-core
   * lrose
   		Wrapper script to simplify running commands in the container
   * release.sh

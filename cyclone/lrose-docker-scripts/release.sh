@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Release lrose-blaze image (push to dockerhub)
+# Release lrose-cyclone image (push to dockerhub)
 # Bruno Melli 04-13-08
 
 USERNAME=mjskier
 ORGANIZATION=nsflrose
-IMAGE=lrose-blaze
+IMAGE=lrose-cyclone
 
 # Get version
 version=`cat VERSION`

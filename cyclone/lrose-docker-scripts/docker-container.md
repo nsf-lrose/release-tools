@@ -1,8 +1,8 @@
-# The Lrose-Blaze Docker image
+# The Lrose-Cyclone Docker image
 
 ## What is it?
 
-Lrose-Blaze allows you to run Lrose applications without having to
+Lrose-Cyclone allows you to run Lrose applications without having to
 compile and install lrose binaries and libraries. 
 
 It is a Ubuntu 16.04 image, with lrose-core installed in 
@@ -13,32 +13,32 @@ as root, you can specify **-u lrose** when you `docker run` or `docker exec`
 
 ## Installing and running
 
-### Getting the lrose-blaze image
+### Getting the lrose-cyclone image
 
 * From hub.docker.com (the default repository for the docker command)
 
-   `docker pull nsflrose/lrose-blaze`
+   `docker pull nsflrose/lrose-cyclone`
    
    This should pull the **latest** tag.
 
 * If you want to test a different image. For example ifyou have access to a tar file of the image
 
-   `docker import lroze-blaze.tgz`
+   `docker import lroze-cyclone.tgz`
 
 Verify it is there with `docker images`
 
 ```
 $ docker images
 REPOSITORY                   TAG                 IMAGE ID     
-nsflrose/lrose-blaze         04132018            0a2ce9c9ae0f 
+nsflrose/lrose-cyclone         04132018            0a2ce9c9ae0f 
 ubuntu_apache2               latest              4b5eefbe9c6c 
 ncareol/soloii               latest              baa1ee4c3541
 ```
 Chances are that instead of a name and tag, you will see **none**.
-Since the **lrose** wrapper assumes an image name of *lrose-blaze* you want to tag the image. Use the `docker tag` command to do that. (Replace **0a2ce9c9ae0f** with the image ID `docker images` shows you)
+Since the **lrose** wrapper assumes an image name of *lrose-cyclone* you want to tag the image. Use the `docker tag` command to do that. (Replace **0a2ce9c9ae0f** with the image ID `docker images` shows you)
 
 ```
-docker tag lrose-blaze:04112018 0a2ce9c9ae0f
+docker tag lrose-cyclone:04112018 0a2ce9c9ae0f
 ```
 	
 ### Using the lrose wrapper ###
@@ -113,14 +113,14 @@ If your machine is using Intel graphics, adding the following to your **~/.lrose
 --device=/dev/dri:/dev/dri:rw
 ```
 
-### Starting an lrose-blaze container
+### Starting an lrose-cyclone container
 
 If you decide to manage your containers yourself instead of using the `lrose` wrapper, you have a few scenarios to choose from:
 
 1. One time command run
 
 	```
-	docker run --rm -it ... lrose-blaze \
+	docker run --rm -it ... lrose-cyclone \
 	           /usr/local/lrose/bin/RadxCheck ...
 	```
 	
@@ -130,7 +130,7 @@ If you decide to manage your containers yourself instead of using the `lrose` wr
   Give the container a name (the -n option) so that it is easier to
   reference than the container id you get from `docker ps`
 
-   `docker run -d ... lrose-blaze -n my_container`
+   `docker run -d ... lrose-cyclone -n my_container`
    
   Then you can *exec* commands in this container.
    
@@ -208,7 +208,7 @@ To run *HawkEye*, you can start the container this way: (you will of course have
 ```
 docker run --name lrose_container --user lrose \
            -e DISPLAY=192.168.0.10:0  -v /tmp/.X11-unix:/tmp/.X11-unix:rw -it \
-           -w /home/lrose lrose-blaze /usr/local/lrose/bin/HawkEye
+           -w /home/lrose lrose-cyclone /usr/local/lrose/bin/HawkEye
 ```
 
 ##### Linux
@@ -222,7 +222,7 @@ To run *HawkEye*, you can start the container this way: (you will of course have
 docker run --name lrose_container --user lrose \
            --env="DISPLAY" --env QT_X11_NO_MITSHM=1 \
            -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-           -w /home/lrose lrose-blaze /usr/local/lrose/bin/HawkEye
+           -w /home/lrose lrose-cyclone /usr/local/lrose/bin/HawkEye
 ```
 
 #### Other useful options
@@ -239,7 +239,7 @@ docker run --name lrose_container --user lrose \
 
 This will list all images available to run, including their name and unique id.
 
-### Stopping an lrose-blaze container
+### Stopping an lrose-cyclone container
 
 * If you were in an interactive shell, just `exit` That should get you out and stop the container
 

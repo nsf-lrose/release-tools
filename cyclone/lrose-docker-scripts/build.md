@@ -1,6 +1,6 @@
-# How to build an lrose-blaze image
+# How to build an lrose-cyclone image
 
-## Prerequisits
+## Prerequisites
 
 All you need is the `Dockerfile` and the `build.sh`.
 In buid.sh, replace the **ORGANIZATION** and possibly **IMAGE** variables with your own.
@@ -16,11 +16,11 @@ system. Double check with
 
 ## Export the image
 
-`docker export <image_ID> --output lrose-blaze.tgz`
+`docker export <image_ID> --output lrose-cyclone.tgz`
 
 ## Copy it to another machine and import it
 
-`docker import lrose-blaze.tgz`
+`docker import lrose-cyclone.tgz`
 
 ## Building a custom image
 

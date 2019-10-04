@@ -1,10 +1,16 @@
-# docker-image-name: "nsflrose/lrose-blaze"
+# docker-image-name: "nsflrose/lrose-cyclone"
+
+# usage 
+#  RELEASE_DATE=lrose-cyclone-20190801
 
 FROM ubuntu:18.10 as builder
+
+ARG RELEASE_DATE
 
 MAINTAINER Bruno Melli "bpmelli@rams.colostate.edu"
 LABEL vendor="Joint NCAR CSU"
 LABEL release-date="2019-01-05"
+
 
 COPY checkout_and_build_auto.py /tmp
 
@@ -21,14 +27,14 @@ RUN apt-get update && apt-get install -y  \
 WORKDIR /tmp
 
 RUN ln -s -f /usr/lib/x86_64-linux-gnu/qt5/bin/qmake /usr/bin/qmake-qt5 && \
-    /tmp/checkout_and_build_auto.py --debug --package lrose-blaze --prefix \
-         /usr/local/lrose --clean --logDir /tmp/my_lrose_log
+    /tmp/checkout_and_build_auto.py --debug --package lrose-cyclone --prefix \
+         /usr/local/lrose --clean --logDir /tmp/my_lrose_log --releaseDate $RELEASE_DATE
 
 # Checkout and build fractl
 
 RUN git clone https://github.com/mmbell/fractl.git && \
     cd fractl && \
-    git checkout lrose-blaze-20190105 && \
+    git checkout lrose-cyclone-20190105 && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/lrose . && \
     make install
 
@@ -38,7 +44,7 @@ WORKDIR /tmp
 
 RUN git clone https://github.com/mmbell/samurai.git && \
     cd samurai && \
-    git checkout lrose-blaze-20190105 && \
+    git checkout lrose-cyclone-20190105 && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/lrose . && \
     make install
     
