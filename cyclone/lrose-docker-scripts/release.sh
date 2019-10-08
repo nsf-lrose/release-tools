@@ -3,7 +3,7 @@
 # Release lrose-cyclone image (push to dockerhub)
 # Bruno Melli 04-13-08
 
-USERNAME=mjskier
+USERNAME=leavesntwigs
 ORGANIZATION=nsflrose
 IMAGE=lrose-cyclone
 

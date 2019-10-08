@@ -9,7 +9,7 @@ ARG RELEASE_DATE
 
 MAINTAINER Bruno Melli "bpmelli@rams.colostate.edu"
 LABEL vendor="Joint NCAR CSU"
-LABEL release-date="2019-01-05"
+LABEL release-date="2019-08-01"
 
 
 COPY checkout_and_build_auto.py /tmp
@@ -26,15 +26,18 @@ RUN apt-get update && apt-get install -y  \
     
 WORKDIR /tmp
 
-RUN ln -s -f /usr/lib/x86_64-linux-gnu/qt5/bin/qmake /usr/bin/qmake-qt5 && \
-    /tmp/checkout_and_build_auto.py --debug --package lrose-cyclone --prefix \
+RUN ln -s -f /usr/lib/x86_64-linux-gnu/qt5/bin/qmake /usr/bin/qmake-qt5 
+
+ARG RELEASE_DATE
+
+RUN /tmp/checkout_and_build_auto.py --debug --package lrose-cyclone --prefix \
          /usr/local/lrose --clean --logDir /tmp/my_lrose_log --releaseDate $RELEASE_DATE
 
 # Checkout and build fractl
 
 RUN git clone https://github.com/mmbell/fractl.git && \
     cd fractl && \
-    git checkout lrose-cyclone-20190105 && \
+    git checkout lrose-cyclone-20190726 && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/lrose . && \
     make install
 
@@ -44,9 +47,20 @@ WORKDIR /tmp
 
 RUN git clone https://github.com/mmbell/samurai.git && \
     cd samurai && \
-    git checkout lrose-cyclone-20190105 && \
+    git checkout lrose-cyclone-20190726 && \ 
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/lrose . && \
     make install
+
+# Checkout and build vortrac
+# TODO: this is not working; I think there needs to be a qmake command before a cmake?
+# WORKDIR /tmp2
+
+# RUN git clone https://github.com/mmbell/vortrac.git && \
+    # cd vortrac && \
+    # git checkout lrose-cyclone-20190726 && \ 
+    # cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/lrose . && \
+    # make install
+    
     
 # Set runpath
 
@@ -68,7 +82,7 @@ COPY --from=builder /usr/local/lrose/ /usr/local/lrose/
 WORKDIR /home/lrose
 
 RUN apt-get update && apt-get install -y \
-    libqt5gui5 libqt5core5a qt5-default libx11-6 \
+    libqt5gui5 libqt5core5a libqt5qml5 qt5-default libx11-6 \
     libfftw3-3 libgeographic17 \
     libfreetype6 libcurl4 && \
     rm -rf /var/lib/apt/lists/* && \
