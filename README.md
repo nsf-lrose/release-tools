@@ -24,3 +24,11 @@ Each major release of LROSE has build scripts that pull unique versions of the L
 2.  Update Release Notes: 
 a. What applications/tools are included and which versions
 b. What bug fixes, etc. 
+
+3. Build lrose-core using --lrose-cyclone flag
+
+4. Build brew formula
+
+5. Build Docker ubuntu images & push to DockerHub
+
+6. Sanity Test
