@@ -2,9 +2,11 @@
 
 ## What ##
 
-Tools to help creating release assets: homebrew formulas, docker images, debian packages,...
+LROSE Release Process.  Tools and steps to create release assets: homebrew formulas, docker images, debian packages,...
 
 ## Structure ##
+
+Each major release of LROSE has build scripts that pull unique versions of the LROSE tools.  The build scripts include:
 
 * homebrew-scripts
 
@@ -13,3 +15,12 @@ Tools to help creating release assets: homebrew formulas, docker images, debian 
 * lrose-docker-scripts
 
    Scripts to generate docker images, and one level below under the **debian** folder, scripts and files to generate binary debian packages.
+   
+## Release Process ##
+
+1. Continuous Integration Scripts
+(CircleCI .yml file)
+
+2.  Update Release Notes: 
+a. What applications/tools are included and which versions
+b. What bug fixes, etc. 
