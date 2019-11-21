@@ -5,7 +5,7 @@
 
 FROM ubuntu:18.10 as builder
 
-ARG RELEASE_DATE
+# ARG RELEASE_DATE
 
 MAINTAINER Bruno Melli "bpmelli@rams.colostate.edu"
 LABEL vendor="Joint NCAR CSU"
@@ -28,10 +28,11 @@ WORKDIR /tmp
 
 RUN ln -s -f /usr/lib/x86_64-linux-gnu/qt5/bin/qmake /usr/bin/qmake-qt5 
 
-ARG RELEASE_DATE
+# ARG RELEASE_DATE
 
 RUN /tmp/checkout_and_build_auto.py --debug --package lrose-cyclone --prefix \
-         /usr/local/lrose --clean --logDir /tmp/my_lrose_log --releaseDate $RELEASE_DATE
+         /usr/local/lrose --clean --logDir /tmp/my_lrose_log 
+# --releaseDate $RELEASE_DATE
 
 # Checkout and build fractl
 
