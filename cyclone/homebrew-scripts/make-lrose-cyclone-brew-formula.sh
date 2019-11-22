@@ -115,16 +115,17 @@ class LroseCyclone < Formula
   depends_on 'szip'
   depends_on 'udunits'
   depends_on 'armadillo'
-  depends_on :x11
+  # depends_on :x11
 
   def install
     # This is the lrose-cyclone subset of lrose-core
 
     ENV["PKG_CONFIG_PATH"] = "/usr/local/opt/qt/lib/pkgconfig"
-    Dir.chdir("codebase")
+    system "tar xf lrose-cyclone*.tgz"
+    Dir.chdir("lrose-cyclone*.mac_osx")
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
-    Dir.chdir("..")
+    #Dir.chdir("..")
     system "rsync", "-av", "share", "#{prefix}"
 
     # Build/install fractl
@@ -147,23 +148,23 @@ class LroseCyclone < Formula
     Dir.chdir("..")
 
     # Build/install vortrac
-    Dir.chdir("vortrac/src")
-    ENV['LROSE_ROOT_DIR'] = prefix
-    ENV['NETCDF_INCLUDE'] = "#{prefix}/include"
-    ENV['NETCDF_LIB'] = "#{prefix}/lib"
-    system "qmake", "."
-    system "make"
-    bin.install 'vortrac.app/Contents/MacOS/vortrac'
-    Dir.chdir("..")
-    system "rsync", "-av", "Resources", "#{prefix}"
-    Dir.chdir("..")
+    #Dir.chdir("vortrac/src")
+    #ENV['LROSE_ROOT_DIR'] = prefix
+    #ENV['NETCDF_INCLUDE'] = "#{prefix}/include"
+    #ENV['NETCDF_LIB'] = "#{prefix}/lib"
+    #system "qmake", "."
+    #system "make"
+    #bin.install 'vortrac.app/Contents/MacOS/vortrac'
+    #Dir.chdir("..")
+    #system "rsync", "-av", "Resources", "#{prefix}"
+    #Dir.chdir("..")
   end
  
   def test
     system "#{bin}/RadxPrint", "-h"
     system "#{bin}/samurai", "-h"
     system "#{bin}/fractl", "-h"
-    system "#{bin}/vortrac", "-h"
+    # system "#{bin}/vortrac", "-h"
   end
 end
 
