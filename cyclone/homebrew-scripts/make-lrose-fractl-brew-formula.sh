@@ -82,7 +82,7 @@
 # URL="https://github.com/NCAR/lrose-release-test/releases/download/testing/$TARFILE"
 echo "Generating lrose-cyclone.rb"
 
-cat <<EOF > lrose-cyclone.rb
+cat <<EOF > lrose-cyclone-fractl.rb
 
 require 'formula'
 
