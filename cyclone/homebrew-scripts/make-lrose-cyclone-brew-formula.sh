@@ -103,11 +103,11 @@ class LroseCyclone < Formula
   depends_on 'cmake'
   depends_on 'eigen'
   depends_on 'fftw'
-  depends_on 'flex'
+  # depends_on 'flex'
   depends_on 'geographiclib'
   depends_on 'libomp'
   depends_on 'hdf5' => 'enable-cxx'
-  depends_on 'jasper'
+  # depends_on 'jasper'
   depends_on 'jpeg'
   depends_on 'netcdf' => 'enable-cxx-compat'
   depends_on 'pkg-config'
@@ -115,14 +115,15 @@ class LroseCyclone < Formula
   depends_on 'szip'
   depends_on 'udunits'
   depends_on 'armadillo'
+  depends_on 'rsync'
+  depends_on 'libzip'
   # depends_on :x11
 
   def install
-    # This is the lrose-cyclone subset of lrose-core
 
     ENV["PKG_CONFIG_PATH"] = "/usr/local/opt/qt/lib/pkgconfig"
-    system "tar xf lrose-cyclone*.tgz"
-    Dir.chdir("lrose-cyclone*.mac_osx")
+    # system "tar xf lrose-cyclone*.tgz"
+    # Dir.chdir("lrose-cyclone*.mac_osx")
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
     #Dir.chdir("..")
