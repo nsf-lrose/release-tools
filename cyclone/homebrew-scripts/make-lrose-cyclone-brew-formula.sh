@@ -117,7 +117,7 @@ class LroseCyclone < Formula
   depends_on 'armadillo'
   depends_on 'rsync'
   depends_on 'libzip'
-  # depends_on :x11
+  depends_on :x11
 
   def install
 
