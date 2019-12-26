@@ -27,3 +27,18 @@ Various scripts and files to build a lrose-cyclone image
   * pull.rb
       Script to get the image pull count
 
+--------
+
+12/26/2019
+
+Then for cyclone,
+I made ...
+
+Dockerfile_latest_18.10
+     "           _16.x
+
+build_latest.sh
+
+How to build ...
+
+./build_latest.sh -u 18.10
