@@ -13,51 +13,92 @@ COPY checkout_and_build_auto.py /tmp
 # Add libs needed to build lrose and run the lrose components
 
 RUN apt-get update && apt-get install -y  \
-    libbz2-dev libx11-dev libpng12-dev libfftw3-dev \
-    libjasper-dev qtdeclarative5-dev git \
-    gcc g++ gfortran libfl-dev \
+    libbz2-dev libx11-dev libfftw3-dev \
+    qtdeclarative5-dev git rsync \
+    gcc g++ gfortran \
     automake make libtool pkg-config libexpat1-dev python \
-    cmake libgeographic-dev libeigen3-dev libzip-dev libcurl4-openssl-dev
+    cmake libgeographic-dev libeigen3-dev libzip-dev libcurl4-openssl-dev \
+    libpng-dev libarmadillo-dev libhdf5-dev libnetcdf-dev
     
 WORKDIR /tmp
 
-RUN ln -s /usr/lib/x86_64-linux-gnu/qt5/bin/qmake /usr/bin/qmake-qt5 && \
-    /tmp/checkout_and_build_auto.py --debug --package lrose-core --prefix \
-         /usr/local/lrose --clean 
-# --releaseDate $RELEASE_DATE
+RUN ln -s /usr/lib/x86_64-linux-gnu/qt5/bin/qmake /usr/bin/qmake-qt5
 
-# Checkout and build fractl
+ENV LROSE_INSTALL_DIR /usr/local/lrose
+ENV PKG_CONFIG_PATH /usr/lib/x86_64-linux-gnu/pkgconfig
+
+#
+# lrose-core
+#
+RUN echo $SHELL
+
+RUN echo "y" | /tmp/checkout_and_build_auto.py --clean --noScripts --useSystemNetcdf --package lrose-cyclone --prefix $LROSE_INSTALL_DIR
+
+#
+# fractl
+#
 
 RUN git clone https://github.com/mmbell/fractl.git && \
     cd fractl && \
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/lrose . && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=$LROSE_INSTALL_DIR . && \
+    make && \
     make install
 
-# Checkout and build samurai
+#
+# vortrac
+#
+
+ENV RADX_INCLUDE $LROSE_INSTALL_DIR/include
+ENV RADX_LIB $LROSE_INSTALL_DIR/lib
+ENV NETCDF_INCLUDE `pkg-config --variable=includedir netcdf`
+ENV NETCDF_LIB `pkg-config --variable=libdir netcdf`
+ENV LD_LIBRARY_PATH /usr/local/lrose/lib
+
+ENV ARMADILLO_INCLUDE /usr/include
+ENV ARMADILLO_LIB /usr/lib
+
+# TODO: move upward ...
+RUN apt-get install -y qt5-default
+
+RUN git clone https://github.com/mmbell/vortrac.git && \
+     cd vortrac/src && \
+     qmake . && \
+     make && \
+     cp vortrac $LROSE_INSTALL_DIR/bin && \
+     cd .. && \
+     rsync -av Resources $LROSE_INSTALL_DIR
+
+#
+# samurai
+#
+
+RUN apt-get update && apt-get install -y  \
+    libopenmpi-dev
 
 WORKDIR /tmp
 
 RUN git clone https://github.com/mmbell/samurai.git && \
     cd samurai && \
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/lrose . && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=$LROSE_INSTALL_DIR . && \
+    make && \
     make install
     
 # Start from a fresh ubuntu to not carry over all the build stuff
 
-FROM ubuntu:16.04
+# FROM ubuntu:16.04
 
 # Copy the lrose build
 
-ADD VERSION .
-COPY --from=builder /usr/local/lrose/ /usr/local/lrose/
+#ADD VERSION .
+#COPY --from=builder /usr/local/lrose/ /usr/local/lrose/
 
-WORKDIR /home/lrose
+#WORKDIR /home/lrose
 
-RUN apt-get update && apt-get install -y \
-    libqt5gui5 libqt5core5a qt5-default libx11-6 \
-    libfftw3-3 libgeographic14 \
-    libfreetype6 libcurl3 && \
-    rm -rf /var/lib/apt/lists/* && \
-    useradd -G video lrose
+#RUN apt-get update && apt-get install -y \
+#    libqt5gui5 libqt5core5a qt5-default libx11-6 \
+#    libfftw3-3 libgeographic14 \
+#    libfreetype6 libcurl3 && \
+#    rm -rf /var/lib/apt/lists/* && \
+#    useradd -G video lrose
 
 ENV PATH /usr/local/lrose/bin:$PATH
