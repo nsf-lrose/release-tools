@@ -70,10 +70,9 @@ RUN echo "y" | /tmp/checkout_and_build_auto.py --clean --noScripts --useSystemNe
 
 RUN git clone https://github.com/mmbell/fractl.git && \
     cd fractl && \
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=$LROSE_INSTALL_DIR . 
-# && \
-#    make && \
-#    make install
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=$LROSE_INSTALL_DIR .  && \
+    make && \
+    make install
 
 #
 # vortrac
@@ -86,20 +85,22 @@ ENV RADX_INCLUDE $LROSE_INSTALL_DIR/include
 ENV RADX_LIB $LROSE_INSTALL_DIR/lib
 ENV NETCDF_INCLUDE `pkg-config --variable=includedir netcdf`
 ENV NETCDF_LIB `pkg-config --variable=libdir netcdf`
-ENV QT5_BIN /usr/lib64/qt5/bin
+# ENV QT5_BIN /usr/lib64/qt5/bin
 ENV LD_LIBRARY_PATH /usr/local/lrose/lib
 
 ENV ARMADILLO_INCLUDE /usr/include
 ENV ARMADILLO_LIB /usr/lib
 
+# TODO: move upward ...
+RUN apt-get install -y qt5-default
 
-#RUN git clone https://github.com/mmbell/vortrac.git && \
-#     cd vortrac/src && \
-#     $QT5_BIN/qmake . && \
-#     make && \
-#     cp vortrac $LROSE_INSTALL_DIR/bin && \
-#     cd .. && \
-#     rsync -av Resources $LROSE_INSTALL_DIR
+RUN git clone https://github.com/mmbell/vortrac.git && \
+     cd vortrac/src && \
+     qmake . && \
+     make && \
+     cp vortrac $LROSE_INSTALL_DIR/bin && \
+     cd .. && \
+     rsync -av Resources $LROSE_INSTALL_DIR
 
 
 #
@@ -111,11 +112,11 @@ RUN apt-get update && apt-get install -y  \
 
 WORKDIR /tmp
 
-#RUN git clone https://github.com/mmbell/samurai.git && \
-#    cd samurai && \
-#    /usr/bin/cmake -DCMAKE_INSTALL_PREFIX:PATH=$LROSE_INSTALL_DIR . && \
-#    make && \
-#    make install
+RUN git clone https://github.com/mmbell/samurai.git && \
+    cd samurai && \
+    /usr/bin/cmake -DCMAKE_INSTALL_PREFIX:PATH=$LROSE_INSTALL_DIR . && \
+    make && \
+    make install
 
  
 
@@ -133,14 +134,14 @@ RUN chrpath -k -r /usr/local/lrose/lib * || true
 
 # Start from a fresh ubuntu to not carry over all the build stuff
 
-#FROM ubuntu:18.10
+# FROM ubuntu:18.10
 
 # Copy the lrose build
 
-#ADD VERSION .
-#COPY --from=builder /usr/local/lrose/ /usr/local/lrose/
+# ADD VERSION .
+# COPY --from=builder /usr/local/lrose/ /usr/local/lrose/
 
-#WORKDIR /home/lrose
+# WORKDIR /home/lrose
 
 #RUN apt-get update && apt-get install -y \
 #    libqt5gui5 libqt5core5a libqt5qml5 qt5-default libx11-6 \
