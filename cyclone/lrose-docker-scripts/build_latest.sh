@@ -22,7 +22,7 @@ while getopts "u:ht:" opt; do
     esac
 done
 
-VERSION=`date +%m%d%Y`
+VERSION=`date +%Y%m%d`
 echo "$VERSION_ubuntu_$ubuntu" > VERSION
 
 if [[ ! -r checkout_and_build_auto.py ]]; then
