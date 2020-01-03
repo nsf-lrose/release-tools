@@ -150,9 +150,15 @@ class LroseCyclone < Formula
 
     # Build/install vortrac
     Dir.chdir("vortrac/src")
+    # ENV['PKG_CONFIG_PATH'] = "/usr/local/opt/qt/lib/pkgconfig"
     ENV['LROSE_ROOT_DIR'] = prefix
-    ENV['NETCDF_INCLUDE'] = "#{prefix}/include"
-    ENV['NETCDF_LIB'] = "#{prefix}/lib"
+    ENV['RADX_INCLUDE'] = "#{prefix}/include"
+    ENV['RADX_LIB'] = "#{prefix}/lib"
+    ENV['ARMADILLO_INCLUDE'] = "`pkg-config --variable=includedir armadillo`"
+    ENV['ARMADILLO_LIB'] = "`pkg-config --variable=libdir armadillo`"
+    ENV['NETCDF_INCLUDE'] = "/usr/local/include"
+    ENV['NETCDF_LIB'] = "/usr/local/lib"
+    ENV['LD_LIBRARY_PATH'] = "#{prefix}/lib"
     system "qmake", "."
     system "make"
     bin.install 'vortrac.app/Contents/MacOS/vortrac'
