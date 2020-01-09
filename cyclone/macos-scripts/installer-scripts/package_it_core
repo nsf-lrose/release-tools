@@ -20,7 +20,7 @@ productbuild --synthesize --package ${PACKAGE_NAME} Distribution.xml
 #
 # productbuild --distribution ./Distribution.xml --package-path . ./${ARCHIVE_FILENAME} 
  
-productbuild --distribution ./Distribution.xml --package-path .  --sign "Developer ID Installer: University Corporation for Atmospheric Research (DQ4ZFL4KLF)" ./${ARCHIVE_FILENAME} 
+productbuild --distribution ./Distribution.xml --package-path .  --sign "${CERT_NAME}" ./${ARCHIVE_FILENAME} 
 
  
 #
