@@ -1,0 +1,77 @@
+#!
+
+# this fixes the links found using this command
+# otool -l tmp/workarea/install/lrose/bin/tmp/workarea/install/lrose/bin/RadxPrint
+# look for LC_LOAD_DYLIB 
+#
+# /tmp/workarea/install/lrose/lib/librapmath.0.dylib 
+# 
+export OPATH=/tmp/workarea/install
+export NPATH=/usr/local/lrose202000108
+export RELPATH=tmp/workarea/install
+#export NPATH=$HOME/macos_installer_test_from_circleci_2/$RELPATH
+
+install_name_tool -id $NPATH/lrose/lib/librapplot.0.dylib $RELPATH/lrose/lib/librapplot.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libGeographic.19.dylib $RELPATH/lrose/lib/libGeographic.19.dylib
+install_name_tool -id $NPATH/lrose/lib/libMdv.0.dylib $RELPATH/lrose/lib/libMdv.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libFmq.0.dylib $RELPATH/lrose/lib/libFmq.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libzip.dylib $RELPATH/lrose/lib/libzip.dylib
+install_name_tool -id $NPATH/lrose/lib/librapmath.0.dylib $RELPATH/lrose/lib/librapmath.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libcontour.0.dylib $RELPATH/lrose/lib/libcontour.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libgrib.0.dylib $RELPATH/lrose/lib/libgrib.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3l_omp.3.dylib $RELPATH/lrose/lib/libfftw3l_omp.3.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3f_threads.3.dylib $RELPATH/lrose/lib/libfftw3f_threads.3.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3f.dylib $RELPATH/lrose/lib/libfftw3f.dylib
+install_name_tool -id $NPATH/lrose/lib/libtoolsa.0.dylib $RELPATH/lrose/lib/libtoolsa.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3f_mpi.dylib $RELPATH/lrose/lib/libfftw3f_mpi.dylib
+install_name_tool -id $NPATH/lrose/lib/libarmadillo.9.80.3.dylib $RELPATH/lrose/lib/libarmadillo.9.80.3.dylib
+install_name_tool -id $NPATH/lrose/lib/libeuclid.0.dylib $RELPATH/lrose/lib/libeuclid.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3_omp.dylib $RELPATH/lrose/lib/libfftw3_omp.dylib
+install_name_tool -id $NPATH/lrose/lib/libtitan.0.dylib $RELPATH/lrose/lib/libtitan.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libshapelib.0.dylib $RELPATH/lrose/lib/libshapelib.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libzip.5.dylib $RELPATH/lrose/lib/libzip.5.dylib
+install_name_tool -id $NPATH/lrose/lib/libRadx.0.dylib $RELPATH/lrose/lib/libRadx.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libhydro.0.dylib $RELPATH/lrose/lib/libhydro.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3l.3.dylib $RELPATH/lrose/lib/libfftw3l.3.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3_threads.dylib $RELPATH/lrose/lib/libfftw3_threads.dylib
+install_name_tool -id $NPATH/lrose/lib/libdsdata.0.dylib $RELPATH/lrose/lib/libdsdata.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libsamurai.dylib $RELPATH/lrose/lib/libsamurai.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3l_mpi.dylib $RELPATH/lrose/lib/libfftw3l_mpi.dylib
+install_name_tool -id $NPATH/lrose/lib/libomp.dylib $RELPATH/lrose/lib/libomp.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3_omp.3.dylib $RELPATH/lrose/lib/libfftw3_omp.3.dylib
+install_name_tool -id $NPATH/lrose/lib/libdsserver.0.dylib $RELPATH/lrose/lib/libdsserver.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3f_omp.3.dylib $RELPATH/lrose/lib/libfftw3f_omp.3.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3.dylib $RELPATH/lrose/lib/libfftw3.dylib
+install_name_tool -id $NPATH/lrose/lib/libNcxx.0.dylib $RELPATH/lrose/lib/libNcxx.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3f.3.dylib $RELPATH/lrose/lib/libfftw3f.3.dylib
+install_name_tool -id $NPATH/lrose/lib/libFiltAlg.0.dylib $RELPATH/lrose/lib/libFiltAlg.0.dylib
+install_name_tool -id $NPATH/lrose/lib/librapformats.0.dylib $RELPATH/lrose/lib/librapformats.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libSpdb.0.dylib $RELPATH/lrose/lib/libSpdb.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libcidd.0.dylib $RELPATH/lrose/lib/libcidd.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3f_mpi.3.dylib $RELPATH/lrose/lib/libfftw3f_mpi.3.dylib
+install_name_tool -id $NPATH/lrose/lib/libgrib2.0.dylib $RELPATH/lrose/lib/libgrib2.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libGeographic.19.0.1.dylib $RELPATH/lrose/lib/libGeographic.19.0.1.dylib
+install_name_tool -id $NPATH/lrose/lib/libphysics.0.dylib $RELPATH/lrose/lib/libphysics.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3_mpi.3.dylib $RELPATH/lrose/lib/libfftw3_mpi.3.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3f_omp.dylib $RELPATH/lrose/lib/libfftw3f_omp.dylib
+install_name_tool -id $NPATH/lrose/lib/libadvect.0.dylib $RELPATH/lrose/lib/libadvect.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3_mpi.dylib $RELPATH/lrose/lib/libfftw3_mpi.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3_threads.3.dylib $RELPATH/lrose/lib/libfftw3_threads.3.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3f_threads.dylib $RELPATH/lrose/lib/libfftw3f_threads.dylib
+install_name_tool -id $NPATH/lrose/lib/libnetcdf.15.dylib $RELPATH/lrose/lib/libnetcdf.15.dylib
+install_name_tool -id $NPATH/lrose/lib/libradar.0.dylib $RELPATH/lrose/lib/libradar.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libkd.0.dylib $RELPATH/lrose/lib/libkd.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libtdrp.0.dylib $RELPATH/lrose/lib/libtdrp.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3l.dylib $RELPATH/lrose/lib/libfftw3l.dylib
+install_name_tool -id $NPATH/lrose/lib/libhdf5_cpp.103.dylib $RELPATH/lrose/lib/libhdf5_cpp.103.dylib
+install_name_tool -id $NPATH/lrose/lib/libarmadillo.9.dylib $RELPATH/lrose/lib/libarmadillo.9.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3l_threads.dylib $RELPATH/lrose/lib/libfftw3l_threads.dylib
+install_name_tool -id $NPATH/lrose/lib/libFiltAlgVirtVol.0.dylib $RELPATH/lrose/lib/libFiltAlgVirtVol.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3.3.dylib $RELPATH/lrose/lib/libfftw3.3.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3l_omp.dylib $RELPATH/lrose/lib/libfftw3l_omp.dylib
+install_name_tool -id $NPATH/lrose/lib/libzip.5.0.dylib $RELPATH/lrose/lib/libzip.5.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libdataport.0.dylib $RELPATH/lrose/lib/libdataport.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libRefract.0.dylib $RELPATH/lrose/lib/libRefract.0.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3l_mpi.3.dylib $RELPATH/lrose/lib/libfftw3l_mpi.3.dylib
+install_name_tool -id $NPATH/lrose/lib/libfftw3l_threads.3.dylib $RELPATH/lrose/lib/libfftw3l_threads.3.dylib
+install_name_tool -id $NPATH/lrose/lib/libdidss.0.dylib $RELPATH/lrose/lib/libdidss.0.dylib

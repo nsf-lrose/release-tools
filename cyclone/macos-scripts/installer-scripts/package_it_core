@@ -1,0 +1,33 @@
+#! 
+
+# staging area is ... /Users/brenda/macos_installer_test_from_circleci_2/tmp/workarea/install
+#
+
+export INSTALL_BASE_DIR=/usr/local
+export ARCHIVE_FILENAME=LROSE-Cyclone_Installer.pkg
+export PACKAGE_NAME=LROSE-Core.pkg
+export SOURCE_BASE_DIR=/Users/brenda/lrose
+export STAGING=tmp/workarea/install
+
+pkgbuild --analyze --root ${STAGING} LROSE-Cyclone_Components.plist 
+  
+pkgbuild --root ${STAGING}  --identifier edu.ucar.lrose20200108 --install-location "/usr/local/lrose202000108"  ${PACKAGE_NAME} 
+
+productbuild --synthesize --package ${PACKAGE_NAME} Distribution.xml 
+
+#
+# use productsign  -OR- add -sign parameter to productbuild 
+#
+# productbuild --distribution ./Distribution.xml --package-path . ./${ARCHIVE_FILENAME} 
+ 
+productbuild --distribution ./Distribution.xml --package-path .  --sign "Developer ID Installer: University Corporation for Atmospheric Research (DQ4ZFL4KLF)" ./${ARCHIVE_FILENAME} 
+
+ 
+#
+# make the disk image (.dmg)
+# 
+mkdir -p for_dmg_only 
+cp ${ARCHIVE_FILENAME} for_dmg_only/.
+# ls for_dmg_only/ 
+hdiutil create -volname LROSE-Cyclone_Installer -srcfolder for_dmg_only -ov -format UDZO LROSE-Cyclone_Installer.dmg 
+

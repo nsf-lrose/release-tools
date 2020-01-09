@@ -1,0 +1,4 @@
+# use this to generate a script to fix the names in the libraries
+
+find . -type f -name  '*.dylib'    -execdir awk 'BEGIN{ printf("install_name_tool -id ../lib/%s %s\n", ARGV[1], ARGV[1])}' '{}' ';' > fix_library_names.awk
+
