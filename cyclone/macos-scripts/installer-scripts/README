@@ -1,3 +1,28 @@
+1. Download the staging.tar.gz artifact from the CircleCI test on macos
+2. untar the file
+3. fix the library links and names using the scripts
+4. run package_it_core
+
+Some notes on resolving library links ...
+
+
+Some notes on pkgutil ...
+
+// to list packages installed
+$ pkgutil --pkgs
+
+// to list package files installed; <installed pkg name> is something like edu.ucar.lrose
+$ pkgutil --files <installed pkg name>
+
+// to find install location
+$ pkgutil --pkg-info <installed pkg name>
+
+// to uninstall
+$ remove all files and directories of the package
+$ sudo pkgutil --forget <installed pkg name>
+
+
+
 # use this to generate a script to fix the names in the libraries
 
 find . -type f -name  '*.dylib'    -execdir awk 'BEGIN{ printf("install_name_tool -id ../lib/%s %s\n", ARGV[1], ARGV[1])}' '{}' ';' > fix_library_names.awk
