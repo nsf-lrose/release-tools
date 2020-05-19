@@ -1,0 +1,161 @@
+# docker-image-name: "nsflrose/lrose-cyclone"
+
+# usage 
+#  RELEASE_DATE=lrose-cyclone-20190801
+
+FROM ubuntu:18.10 as builder
+
+# ARG RELEASE_DATE
+
+MAINTAINER Bruno Melli "bpmelli@rams.colostate.edu"
+LABEL vendor="Joint NCAR CSU"
+LABEL release-date="2019-08-01"
+
+
+COPY checkout_and_build_auto.py /tmp
+
+# Add libs needed to build lrose and run the lrose components
+
+RUN apt-get update && apt-get install -y  \
+    libbz2-dev libx11-dev libfftw3-dev \
+    qtdeclarative5-dev libqt5webview5-dev git rsync \
+    gcc g++ gfortran chrpath \
+    automake make libtool pkg-config libexpat1-dev python \
+    cmake libgeographic-dev libeigen3-dev libzip-dev libcurl4-openssl-dev \
+    libpng-dev libarmadillo-dev libhdf5-dev libnetcdf-dev 
+
+# keep getting this error when building fractl and samurai
+# /usr/bin/ld: cannot find -lhdf5
+# /usr/bin/ld: cannot find -lhdf5
+# So, don't install these packages ...
+# libnetcdf-dev netcdf-bin libhdf5-dev hdf5-tools
+# and don't use --useSystemNetcdf flag to checkout_and_build_auto.py script
+#
+    
+WORKDIR /tmp
+
+RUN ln -s -f /usr/lib/x86_64-linux-gnu/qt5/bin/qmake /usr/bin/qmake-qt5 
+
+# ARG RELEASE_DATE
+
+ENV LROSE_INSTALL_DIR /usr/local/lrose
+ENV PKG_CONFIG_PATH /usr/lib/x86_64-linux-gnu/pkgconfig
+
+# 
+# lrose-core
+#
+RUN echo $SHELL
+
+RUN echo "y" | /tmp/checkout_and_build_auto.py --clean --noScripts --useSystemNetcdf --package lrose-cyclone --prefix $LROSE_INSTALL_DIR
+
+
+#RUN if [[ `echo "y" | /tmp/checkout_and_build_auto.py --useSystemNetcdf --debug --prefix $LROSE_INSTALL_DIR --clean --logDir /tmp/my_lrose_log` == 0 ]]; then
+#       echo "It worked"
+#     else 
+#       tail -n 100 /tmp/my_lrose_log/logs/*
+#     fi
+
+# RUN /tmp/checkout_and_build_auto.py --debug --prefix $LROSE_INSTALL_DIR --clean --logDir /tmp/my_lrose_log 
+# --releaseDate $RELEASE_DATE
+
+#            /usr/lib/x86_64-linux-gnu
+# /usr/lib/x86_64-linux-gnu/hdf5/serial
+#RUN ln -s /usr/lib/x86_64-linux-gnu/hdf5/serial /usr/lib
+
+# RUN find /usr -name libhdf5*
+
+#
+# fractl
+#
+
+RUN git clone https://github.com/mmbell/fractl.git && \
+    cd fractl && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=$LROSE_INSTALL_DIR .  && \
+    make && \
+    make install
+
+#
+# vortrac
+#
+# WORKDIR /tmp2
+
+#          name: Add to Environment Variables for vortrac
+#          command: |
+ENV RADX_INCLUDE $LROSE_INSTALL_DIR/include
+ENV RADX_LIB $LROSE_INSTALL_DIR/lib
+ENV NETCDF_INCLUDE `pkg-config --variable=includedir netcdf`
+ENV NETCDF_LIB `pkg-config --variable=libdir netcdf`
+# ENV QT5_BIN /usr/lib64/qt5/bin
+ENV LD_LIBRARY_PATH /usr/local/lrose/lib
+
+ENV ARMADILLO_INCLUDE /usr/include
+ENV ARMADILLO_LIB /usr/lib
+
+# TODO: move upward ...
+RUN apt-get install -y qt5-default
+
+RUN git clone https://github.com/mmbell/vortrac.git && \
+     cd vortrac/src && \
+     qmake . && \
+     make && \
+     cp vortrac $LROSE_INSTALL_DIR/bin && \
+     cd .. && \
+     rsync -av Resources $LROSE_INSTALL_DIR
+
+#
+# samurai
+#
+
+RUN apt-get update && apt-get install -y  \
+    libopenmpi-dev  
+
+WORKDIR /tmp
+
+RUN git clone https://github.com/mmbell/samurai.git && \
+    cd samurai && \
+    /usr/bin/cmake -DCMAKE_INSTALL_PREFIX:PATH=$LROSE_INSTALL_DIR . && \
+    make && \
+    make install
+ 
+
+#     cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/lrose . && \
+#     make install
+    
+    
+# Set runpath
+
+WORKDIR /usr/local/lrose/lib
+RUN chrpath -k -r /usr/local/lrose/lib *.so || true
+
+WORKDIR /usr/local/lrose/bin
+RUN chrpath -k -r /usr/local/lrose/lib * || true
+
+# Start from a fresh ubuntu to not carry over all the build stuff
+
+FROM ubuntu:18.10
+
+# Copy the lrose build
+
+ADD VERSION .
+COPY --from=builder /usr/local/lrose/ /usr/local/lrose/
+
+WORKDIR /home/lrose
+
+#
+# resolve these using:
+#  ldd <executable> 
+# where <executable> is RadxPrint, vortrac, samurai, fractl, etc.
+#
+
+RUN apt-get update && apt-get install -y \
+    libqt5gui5 libqt5core5a libqt5qml5 qt5-default libx11-6 \
+    libfftw3-3 \
+    libhdf5-cpp-100 libnetcdf13 \
+    libgeographic17 libarmadillo9\
+    libfreetype6 libcurl4 && \
+    rm -rf /var/lib/apt/lists/* && \
+    useradd -G video lrose
+
+ENV LD_LIBRARY_PATH /usr/local/lrose/lib
+
+ENV PATH /usr/local/lrose/bin:$PATH
