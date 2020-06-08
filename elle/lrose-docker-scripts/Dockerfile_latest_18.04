@@ -46,7 +46,15 @@ ENV PKG_CONFIG_PATH /usr/lib/x86_64-linux-gnu/pkgconfig
 #
 RUN echo $SHELL
 
-RUN echo "y" | /tmp/checkout_and_build_auto.py --clean --noScripts --prefix $LROSE_INSTALL_DIR
+RUN /tmp/checkout_and_build_auto.py \
+    --package lrose-core \
+    --releaseDate latest \
+    --prefix $LROSE_INSTALL_DIR \
+    --buildDir /tmp/lrose_build \
+    --logDir /tmp/build_logs \
+    --clean --noScripts
+
+#RUN echo "y" | /tmp/checkout_and_build_auto.py --clean --noScripts --prefix $LROSE_INSTALL_DIR
 
 
 #RUN if [[ `echo "y" | /tmp/checkout_and_build_auto.py --useSystemNetcdf --debug --prefix $LROSE_INSTALL_DIR --clean --logDir /tmp/my_lrose_log` == 0 ]]; then
