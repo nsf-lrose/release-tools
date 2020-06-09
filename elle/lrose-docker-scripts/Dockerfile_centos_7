@@ -109,14 +109,14 @@ WORKDIR /home/lrose
 RUN \
     yum install -y epel-release; \
     yum install -y \
-    libqt5gui.so.5 libqt5core.so.5a libqt5qml.so.5 qt5-default libx11-6 \
-    libfftw3 \
-    libhdf5-c++ libnetcdf \
+    qt5-qtbase qt5-qtdeclarative libX11 \
+    fftw3 \
+    libhdf5-c++ netcdf \
     bzip2 eigen3 expat flex \
     libXext libpng libtiff libzip \ 
     openmpi xorg-x11-apps xorg-x11-xauth \
     rpm zlib \
-    geographiclib armadillo\
+    GeographicLib armadillo\
     libfreetype6 libcurl4 && \
     rm -rf /var/lib/apt/lists/* && \
     useradd -G video lrose

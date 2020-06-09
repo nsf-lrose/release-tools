@@ -42,3 +42,28 @@ build_latest.sh
 How to build ...
 
 ./build_latest.sh -u 18.10
+
+06/09/2020
+
+building on ubuntu doesn't work, when building lrose-core/libs,
+error in finding 
+
+In file included from Hdf5/Hdf5xx.cc:36:0:
+
+./include/Ncxx/Hdf5xx.hh:44:10: fatal error: H5public.h: No such file or directory
+
+ #include <H5public.h>
+
+          ^~~~~~~~~~~~
+
+compilation terminated.
+
+the include file is in 
+/usr/... /serial/
+
+
+---- 
+
+so moved to centos:7 as the base container.
+
+NOTE: chrpath is NOT found when running the centos:7 base image.
