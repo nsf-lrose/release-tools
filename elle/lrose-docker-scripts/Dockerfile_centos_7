@@ -88,20 +88,10 @@ COPY --from=builder /usr/local/lrose/ /usr/local/lrose/
 
 WORKDIR /home/lrose
 
-
-RUN apt-get update && apt-get install -y \
-    libqt5gui5 libqt5core5a libqt5qml5 qt5-default libx11-6 \
-    libfftw3-3 \
-    libhdf5-cpp-100 libnetcdf13 \
-    libgeographic17 libarmadillo9\
-    libfreetype6 libcurl4 && \
-    rm -rf /var/lib/apt/lists/* && \
-    useradd -G video lrose
-
 # ----
-# Start from a fresh ubuntu to not carry over all the build stuff
+# Start from a fresh centos to not carry over all the build stuff
 
-FROM ubuntu:18.04
+FROM centos:7
 
 # Copy the lrose build
 
@@ -117,11 +107,15 @@ WORKDIR /home/lrose
 #
 
 RUN \
-    yum install -y epel-release;
+    yum install -y epel-release; \
     yum install -y \
     libqt5gui.so.5 libqt5core.so.5a libqt5qml.so.5 qt5-default libx11-6 \
     libfftw3 \
     libhdf5-c++ libnetcdf \
+    bzip2 eigen3 expat flex \
+    libXext libpng libtiff libzip \ 
+    openmpi xorg-x11-apps xorg-x11-xauth \
+    rpm zlib \
     geographiclib armadillo\
     libfreetype6 libcurl4 && \
     rm -rf /var/lib/apt/lists/* && \
@@ -140,13 +134,13 @@ RUN \
 #    libX11-devel libXext-devel \
 #    libpng-devel libtiff-devel zlib-devel libzip-devel \
 #    GeographicLib-devel eigen3-devel armadillo-devel \
-    expat-devel libcurl-devel openmpi-devel \
-    flex-devel fftw3-devel \
-    bzip2-devel qt5-qtbase-devel qt5-qtdeclarative-devel \
-    hdf5-devel netcdf-devel \
-    xorg-x11-xauth xorg-x11-apps \
-    rpm-build redhat-rpm-config \
-    rpm-devel rpmdevtools
+#    expat-devel libcurl-devel openmpi-devel \
+#    flex-devel fftw3-devel \
+#    bzip2-devel qt5-qtbase-devel qt5-qtdeclarative-devel \
+#    hdf5-devel netcdf-devel \
+#    xorg-x11-xauth xorg-x11-apps \
+#    rpm-build redhat-rpm-config \
+#    rpm-devel rpmdevtools
 # -----
 
 ENV LD_LIBRARY_PATH /usr/local/lrose/lib
