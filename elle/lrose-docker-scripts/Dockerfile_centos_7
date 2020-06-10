@@ -61,8 +61,11 @@ RUN \
     --releaseDate ${RELEASE_DATE} \
     --prefix /usr/local/lrose \
     --buildDir /tmp/lrose_build \
-    --logDir /tmp/build_logs \
+    --logDir $HOME/build_logs \
     --cmake3 --fractl --vortrac --samurai
+
+COPY /tmp/build_logs/build-apps.log build-apps.log
+ 
 
 # clean up
 
@@ -71,11 +74,11 @@ RUN \
 
 # Set runpath
 
-WORKDIR /usr/local/lrose/lib
-RUN chrpath -k -r /usr/local/lrose/lib *.so || true
+#WORKDIR /usr/local/lrose/lib
+# RUN chrpath -k -r /usr/local/lrose/lib *.so || true
 
-WORKDIR /usr/local/lrose/bin
-RUN chrpath -k -r /usr/local/lrose/lib * || true
+#WORKDIR /usr/local/lrose/bin
+#RUN chrpath -k -r /usr/local/lrose/lib * || true
 
 # Start from a fresh ubuntu to not carry over all the build stuff
 
