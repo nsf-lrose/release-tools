@@ -38,7 +38,7 @@ else
     chmod +x checkout_and_build_auto.py
 fi
 
-docker build -f "Dockerfile_centos_7" -t $ORGANIZATION/$IMAGE:$VERSION --build-arg RELEASE_DATE=$tag .
+docker build -f "Dockerfile_centos_7_debug" -t $ORGANIZATION/$IMAGE:$VERSION --build-arg RELEASE_DATE=$tag .
 
 # docker build -f "Dockerfile_latest_$ubuntu" -t $ORGANIZATION/$IMAGE:$VERSION --build-arg RELEASE_DATE=$tag .
 

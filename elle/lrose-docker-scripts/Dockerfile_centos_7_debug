@@ -1,0 +1,70 @@
+# docker-image-name: "nsflrose/lrose-elle"
+
+# usage
+#  RELEASE_DATE=lrose-elle-20200609
+
+#==============================================================
+# provision a Docker image for building lrose
+# start with clean image
+# install the required packages
+
+FROM centos:7 as builder
+
+
+ARG OS_TYPE=centos
+ARG OS_VERSION=7
+ARG LROSE_PKG=core
+ARG RELEASE_DATE=latest
+
+MAINTAINER UCAR "eol@ucar.edu"
+LABEL vendor="Joint NCAR CSU"
+LABEL release-date="2020-06-09"
+
+COPY checkout_and_build_auto.py /tmp
+
+
+# install required packages
+
+RUN \
+    yum install -y epel-release; \
+    yum install -y \
+    tcsh wget git \
+    tkcvs emacs rsync python mlocate \
+    m4 make cmake cmake3 libtool autoconf automake \
+    gcc gcc-c++ gcc-gfortran glibc-devel \
+    libX11-devel libXext-devel \
+    libpng-devel libtiff-devel zlib-devel libzip-devel \
+    GeographicLib-devel eigen3-devel armadillo-devel \
+    expat-devel libcurl-devel openmpi-devel \
+    flex-devel fftw3-devel \
+    bzip2-devel qt5-qtbase-devel qt5-qtdeclarative-devel \
+    hdf5-devel netcdf-devel \
+    xorg-x11-xauth xorg-x11-apps \
+    rpm-build redhat-rpm-config \
+    rpm-devel rpmdevtools
+
+# create link for qtmake
+
+RUN \
+    cd /usr/bin; \
+    ln -s qmake-qt5 qmake;
+
+RUN \
+    echo "Building lrose in redhat container"; \
+    echo "  package is: ${LROSE_PKG}" 
+
+# run the checkout and build script
+
+RUN if [`/tmp/checkout_and_build_auto.py \
+    --package lrose-${LROSE_PKG} \
+    --releaseDate ${RELEASE_DATE} \
+    --prefix /usr/local/lrose \
+    --buildDir /tmp/lrose_build \
+    --logDir $HOME/build_logs \
+    --cmake3 --fractl --vortrac --samurai` == 0]; then
+       echo "It worked"
+     else 
+       tail -n 100 /tmp/my_lrose_log/logs/*
+     fi
+ 
+
