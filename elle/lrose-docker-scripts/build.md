@@ -1,15 +1,15 @@
-# How to build an lrose-elle image
+# How to build an LROSE-Elle image
 
 ## Prerequisites
 
-All you need is the `Dockerfile` and the `build.sh`.
+All you need a `Dockerfile` and the `build.sh`.
 In buid.sh, replace the **ORGANIZATION** and possibly **IMAGE** variables with your own.
 
 ## Build the image
 
 ./build.sh
 
-When all set and done, you should have the image on your
+If successful, you should have the image on your
 system. Double check with
 
 `docker images`
@@ -24,7 +24,7 @@ system. Double check with
 
 ## Building a custom image
 
-The image generated with the given Dockerfile is a generic ubuntu image with just enough run-time libraries to support running lrose binaries.
+The image generated with the given Dockerfile is a generic image with just enough run-time libraries to support running lrose binaries.
 
 If you wanted to add more packages, create additional users... you can either add instructions to the Dockerfile, or follow these steps
 

@@ -2,7 +2,7 @@
 Various scripts and files to build a lrose-elle image
 
   * build.md
-  		Show how to build the image
+  		Shows how to build the image
   * Dockerfile
       Used by the build.sh script
   * docker-container.md
@@ -29,6 +29,8 @@ Various scripts and files to build a lrose-elle image
 
 --------
 
+### Release Notes
+
 05/19/2020
 
 Then for elle,
@@ -45,7 +47,8 @@ How to build ...
 
 06/09/2020
 
-building on ubuntu doesn't work, when building lrose-core/libs,
+Building a Docker container on Ubuntu doesn't work, when building lrose-core/libs
+```
 error in finding 
 
 In file included from Hdf5/Hdf5xx.cc:36:0:
@@ -57,13 +60,12 @@ In file included from Hdf5/Hdf5xx.cc:36:0:
           ^~~~~~~~~~~~
 
 compilation terminated.
+```
 
 the include file is in 
+```
 /usr/... /serial/
+```
 
+Moved to centos:7 as the base container.
 
----- 
-
-so moved to centos:7 as the base container.
-
-NOTE: chrpath is NOT found when running the centos:7 base image.

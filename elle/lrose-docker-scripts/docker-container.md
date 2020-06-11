@@ -1,11 +1,11 @@
-# The Lrose-Elle Docker image
+# The LROSE-Elle Docker image
 
 ## What is it?
 
-Lrose-Elle allows you to run Lrose applications without having to
-compile and install lrose binaries and libraries. 
+lrose-elle allows you to run LROSE applications without having to
+compile and install LROSE binaries and libraries. 
 
-It is a Ubuntu 16.04 image, with lrose-core installed in 
+It is a Centos 7 image, with lrose-core installed in 
 /usr/local/lrose.
 
 It has one user named **lrose** so if you don't want to run commands
@@ -21,9 +21,9 @@ as root, you can specify **-u lrose** when you `docker run` or `docker exec`
    
    This should pull the **latest** tag.
 
-* If you want to test a different image. For example ifyou have access to a tar file of the image
+* If you want to test a different image. For example if you have access to a tar file of the image
 
-   `docker import lroze-elle.tgz`
+   `docker import lrose-elle.tgz`
 
 Verify it is there with `docker images`
 
