@@ -57,15 +57,12 @@ RUN \
 
 RUN echo $SHELL
 
-RUN if [ `/tmp/checkout_and_build_auto.py \
+RUN /tmp/checkout_and_build_auto.py \
     --package lrose-${LROSE_PKG} \
     --releaseDate ${RELEASE_DATE} \
     --prefix /usr/local/lrose \
     --buildDir /tmp/lrose_build \
     --logDir /tmp/build_logs \
-    --cmake3 --fractl --vortrac --samurai` == 0 ]; \
-    then echo "It worked"  ; \
-    else tail -n 100 /tmp/build_logs/logs/* ; \
-    fi
+    --cmake3 --fractl --vortrac --samurai
  
 
