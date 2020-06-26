@@ -54,8 +54,8 @@ ENV QT5_BINDIR `pkg-config --variable=bindir Qt5`
 ENV PATH $QT5_BINDIR:$PATH
 
 RUN \
-  echo "PKG_CONFIG_PATH = ${PKG_CONFIG_PATH}"
-  echo "QT5_BINDIR = ${QT5_BINDIR}"
+  echo "PKG_CONFIG_PATH = ${PKG_CONFIG_PATH}" \
+  echo "QT5_BINDIR = ${QT5_BINDIR}" \
   echo "PATH = ${PATH}"
 
 RUN \
