@@ -50,9 +50,9 @@ RUN \
 #     ln -s qmake-qt5 qmake;
 
 RUN \
-  export PKG_CONFIG_PATH="/usr/lib64/pkgconfig" \
-  export QT5_BINDIR="`pkg-config --variable=bindir Qt5`" \
-  export PATH=${QT5_BINDIR}:${PATH} \
+  export "PKG_CONFIG_PATH=/usr/lib64/pkgconfig" \
+  export "QT5_BINDIR=`pkg-config --variable=bindir Qt5`" \
+  export "PATH=${QT5_BINDIR}:${PATH}" \
   echo "PKG_CONFIG_PATH = ${PKG_CONFIG_PATH}" \
   echo "QT5_BINDIR = ${QT5_BINDIR}" \
   echo "PATH = ${PATH}" \
