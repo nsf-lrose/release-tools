@@ -50,7 +50,7 @@ RUN \
 #     ln -s qmake-qt5 qmake;
 
 ENV PKG_CONFIG_PATH /usr/lib64/pkgconfig
-ENV QT5_BINDIR `pkg-config --variable=bindir Qt5`
+ENV QT5_BINDIR pkg-config --variable=bindir Qt5
 ENV PATH $QT5_BINDIR:$PATH
 
 RUN \
