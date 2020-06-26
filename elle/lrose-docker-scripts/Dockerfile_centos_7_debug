@@ -41,13 +41,22 @@ RUN \
     hdf5-devel netcdf-devel \
     xorg-x11-xauth xorg-x11-apps \
     rpm-build redhat-rpm-config \
-    rpm-devel rpmdevtools
+    rpm-devel rpmdevtools chrpath
 
-# create link for qtmake
+# create environment variables  for qtmake
+
+# RUN \
+#     cd /usr/bin; \
+#     ln -s qmake-qt5 qmake;
+
+ENV PKG_CONFIG_PATH /usr/lib64/pkgconfig
+ENV QT5_BINDIR `pkg-config --variable=bindir Qt5`
+ENV PATH $QT5_BINDIR:$PATH
 
 RUN \
-    cd /usr/bin; \
-    ln -s qmake-qt5 qmake;
+  echo "PKG_CONFIG_PATH = ${PKG_CONFIG_PATH}"
+  echo "QT5_BINDIR = ${QT5_BINDIR}"
+  echo "PATH = ${PATH}"
 
 RUN \
     echo "Building lrose in redhat container"; \
@@ -65,4 +74,47 @@ RUN /tmp/checkout_and_build_auto.py \
     --logDir /tmp/build_logs \
     --cmake3 --fractl --vortrac --samurai
  
+# ------------  from ubuntu Dockerfile --------
 
+
+#     cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/lrose . && \
+#     make install
+
+
+# Set runpath
+
+WORKDIR /usr/local/lrose/lib
+RUN chrpath -k -r /usr/local/lrose/lib *.so || true
+
+WORKDIR /usr/local/lrose/bin
+RUN chrpath -k -r /usr/local/lrose/lib * || true
+
+# Start from a fresh centos to not carry over all the build stuff
+
+FROM centos:7
+
+# Copy the lrose build
+
+ADD VERSION .
+COPY --from=builder /usr/local/lrose/ /usr/local/lrose/
+
+WORKDIR /home/lrose
+
+#
+# resolve these using:
+#  ldd <executable>
+# where <executable> is RadxPrint, vortrac, samurai, fractl, etc.
+#
+
+RUN apt-get update && apt-get install -y \
+    libqt5gui5 libqt5core5a libqt5qml5 qt5-default libx11-6 \
+    libfftw3-3 \
+    libhdf5-cpp-100 libnetcdf13 \
+    libgeographic17 libarmadillo9\
+    libfreetype6 libcurl4 && \
+    rm -rf /var/lib/apt/lists/* && \
+    useradd -G video lrose
+
+ENV LD_LIBRARY_PATH /usr/local/lrose/lib
+
+ENV PATH /usr/local/lrose/bin:$PATH
