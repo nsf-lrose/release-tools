@@ -49,16 +49,13 @@ RUN \
 #     cd /usr/bin; \
 #     ln -s qmake-qt5 qmake;
 
-RUN \
-  export "PKG_CONFIG_PATH=/usr/lib64/pkgconfig" \
-  export "QT5_BINDIR=`pkg-config --variable=bindir Qt5`" \
-  export "PATH=${QT5_BINDIR}:${PATH}" \
-  echo "PKG_CONFIG_PATH = ${PKG_CONFIG_PATH}" \
-  echo "QT5_BINDIR = ${QT5_BINDIR}" \
-  echo "PATH = ${PATH}" \
-  echo "Building lrose in redhat container"; \
-  echo "  package is: ${LROSE_PKG}" \
-  echo $SHELL \
+
+# hokey way of setting environment variables in Dockerfile; do not change!
+ENV PKG_CONFIG_PATH /usr/lib64/pkgconfig
+
+RUN pkg-config --variable=bindir Qt5 > /root/tmp_qt5_bindir
+RUN PATH=$(cat /root/tmp_qt5_bindir):$PATH ; echo "PATH=" $PATH; \
+  echo "  package is: ${LROSE_PKG}";  \
  /tmp/checkout_and_build_auto.py \
     --package lrose-${LROSE_PKG} \
     --releaseDate ${RELEASE_DATE} \
