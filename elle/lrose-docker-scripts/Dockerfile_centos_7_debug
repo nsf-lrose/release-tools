@@ -96,12 +96,12 @@ WORKDIR /home/lrose
 # where <executable> is RadxPrint, vortrac, samurai, fractl, etc.
 #
 
-RUN apt-get update && apt-get install -y \
-    libqt5gui5 libqt5core5a libqt5qml5 qt5-default libx11-6 \
-    libfftw3-3 \
-    libhdf5-cpp-100 libnetcdf13 \
-    libgeographic17 libarmadillo9\
-    libfreetype6 libcurl4 && \
+RUN yum install -y \
+    qt5-qtbase qt5-qtdeclarative xorg-x11-xauth xorg-x11-apps \
+    fftw3 \
+    hdf5 netcdf \
+    GeographicLib armadillo \
+    freetype curl && \
     rm -rf /var/lib/apt/lists/* && \
     useradd -G video lrose
 
