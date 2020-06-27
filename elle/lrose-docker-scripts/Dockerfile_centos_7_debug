@@ -96,7 +96,8 @@ WORKDIR /home/lrose
 # where <executable> is RadxPrint, vortrac, samurai, fractl, etc.
 #
 
-RUN yum install -y \
+RUN yum install -y epel-release; \
+    yum install -y \
     qt5-qtbase qt5-qtdeclarative xorg-x11-xauth xorg-x11-apps \
     fftw3 \
     hdf5 netcdf \
