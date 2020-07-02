@@ -106,8 +106,10 @@ case $my_os in
     ;;  
     Darwin)
     my_host=`hostname`
-    my_ip=`host $my_host`
-    my_ip=${my_ip##* }
+#    my_ip=`host $my_host`
+#    my_ip=${my_ip##* }
+#   replace above lines for my_ip with the following ... thank you nguy lrose-core issue #80
+    my_ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
     DISPLAY_OPT="-e DISPLAY=$my_ip:0"
     xhost +$my_ip > /dev/null
     ;;
