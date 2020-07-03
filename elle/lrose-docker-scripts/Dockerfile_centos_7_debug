@@ -104,7 +104,8 @@ RUN yum install -y epel-release; \
     GeographicLib armadillo \
     freetype curl && \
     rm -rf /var/lib/apt/lists/* && \
-    useradd -G video lrose
+    useradd -G video lrose && \
+    dbus-uuidgen --ensure; cat /var/lib/dbus/machine-id >> /etc/machine-id
 
 ENV LD_LIBRARY_PATH /usr/local/lrose/lib
 
